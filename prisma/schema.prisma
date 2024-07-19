@@ -1,0 +1,98 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleEnum {
+  USER
+  RESPONSABLE
+  AGENT
+}
+
+model User {
+  id String @id @default(uuid()) @map("_id")
+  email          String       @unique
+  username       String       @unique
+  firstName      String
+  lastName       String
+  password       String
+  role           RoleEnum     @default(USER)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  service        Service?     @relation(fields: [service_id], references: [id])
+  service_id     String?
+  responsable    Responsable? @relation(fields: [responsable_id], references: [id])
+  responsable_id String?
+  demnades       Demande[]
+}
+
+model Demande {
+  id         String        @id @default(uuid()) @map("_id")
+  title     String 
+  description String
+  user       User?         @relation(fields: [user_id], references: [id])
+  user_id    String?
+  service    Service       @relation(fields: [service_id], references: [id])
+  service_id String
+  produits   Produit[]
+  status     DemandeStatus
+  createdAt  DateTime      @default(now())
+  devis      Devis[]
+}
+
+enum DemandeStatus {
+  EN_ATTENTE
+  EN_COURS
+  TERMINE
+  REFUSE
+}
+
+model Produit {
+  id String @id @default(uuid()) @map("_id")
+
+  name        String
+  description String?
+  image       String?
+  quantity    Int
+  category    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  demande     Demande  @relation(fields: [demande_id], references: [id])
+  demande_id  String
+}
+
+model Devis {
+  id String @id @default(uuid()) @map("_id")
+
+  createdAt  DateTime @default(now())
+  demande    Demande?  @relation(fields: [demande_id], references: [id])
+  demande_id String?
+  accepted   Boolean
+}
+
+model Service {
+  id String @id @default(uuid()) @map("_id")
+
+  employees   User[]
+  name        String
+  Responsable Responsable?
+  demandes    Demande[]
+}
+
+model Responsable {
+  id String @id @default(uuid()) @map("_id")
+
+  employees  User[]
+  Service    Service @relation(fields: [service_id], references: [id])
+  service_id String  @unique
+}
