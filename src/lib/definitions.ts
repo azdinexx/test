@@ -52,7 +52,7 @@ export type LoginFormState =
   | undefined;
 
 export type SessionPayload = {
-  userId: number;
+  userId: string;
   userRole: string;
   expiresAt: Date;
 };

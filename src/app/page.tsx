@@ -14,7 +14,7 @@ async function LoginPage() {
 
         <section className='w-full  flex justify-center items-center flex-col py-20'>
           <Image
-            src={'/prisme .png'}
+            src={'/logo.png'}
             width={150}
             height={150}
             alt='prisme logo'

@@ -8,10 +8,12 @@ import Item from './item';
 import { FournisseurIcon } from '../icones/fournisseur';
 import { EmployesIcon } from '../icones/employes';
 import { SociteIcon } from '../icones/societe';
+import { logout } from '@/actions/auth';
+import Logoutbtn from '../logout-btn';
 
 function Aside() {
   return (
-    <aside className='w-full max-w-[250px] border-r shadow-sm bg-white'>
+    <aside className='w-full max-w-[250px] border-r shadow-sm bg-white flex flex-col'>
       <div className='p-5 pt-10 text-center font-bold text-xl'>
         Gestion d&apos;Achats
       </div>
@@ -19,7 +21,9 @@ function Aside() {
         {navigation.map((item, index) => (
           <Item key={index} {...item} />
         ))}
+
       </ul>
+      <Logoutbtn/>
     </aside>
   );
 }

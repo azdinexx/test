@@ -1,8 +1,8 @@
 'use server';
 import { SignJWT, jwtVerify } from 'jose';
 import { SessionPayload } from '@/lib/definitions';
-import { cookies, headers } from 'next/headers';
-import { login as User } from '@prisma/client';
+import { cookies, } from 'next/headers';
+import {  User } from '@prisma/client';
 
 const secretKey = process.env.NEXT_PUBLIC_JWT_SECRET_KEY;
 const encodedKey = new TextEncoder().encode(secretKey);
@@ -28,7 +28,7 @@ export async function decrypt(session: string | undefined = '') {
 }
 
 export async function createSession(
-  userId: User['iduser'],
+  userId: User['id'],
   userRole: User['role']
 ) {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);

@@ -1,3 +1,8 @@
+import { Cinzel } from "next/font/google";
+const quoteFont = Cinzel({
+  weight: ["400", "700"],
+  subsets : ["latin"],
+})
 export default function ShortCutLinks() {
     const quote = quotes[Math.floor(Math.random() * quotes.length)];
     return (
@@ -12,12 +17,13 @@ export default function ShortCutLinks() {
         ></div>
         
         <div className='max-w-sm flex flex-col gap-6 text-3xl text-center text-white'>
-        <p>
+        <p className={quoteFont.className+ ' z-50'}>
           {
             quote.french
           }
         </p>
-        <p>
+        <p className={quoteFont.className}>
+
           {
             quote.english
           }

@@ -1,5 +1,6 @@
 'use server'
 import { db } from "@/lib/db"
+import { getUserId } from "@/lib/session"
 import { redirect } from "next/navigation"
 
 
@@ -107,4 +108,20 @@ export async function remove_produit(state : any , formData : FormData){
     return {
         success : 'Produit supprimé avec succès'
     }
+}
+
+export async function getUserDemandes(){
+    const user_id = await getUserId()
+    if(!user_id){
+        console.log('No user id')
+        return []
+    }
+
+    const mes_demandes = await db.demande.findMany({
+        include : {
+            user : true
+        },
+    })
+
+    return mes_demandes || []
 }
